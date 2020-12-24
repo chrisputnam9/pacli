@@ -112,8 +112,84 @@ Class Pacli extends Console_Abstract
         return $body;
     }
 
+    protected $___post = [
+        "Post data to the Asana API",
+        ["Endpoint slug, eg. 'projects'", "string"],
+        ["JSON (or HJSON) body to send", "string"],
+        ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
+        ["Whether to return headers", "boolean"],
+        ["Whether to output progress", "boolean"],
+    ];
+	public function post($endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=true)
+    {
+        return $this->_sendData('POST', $endpoint, $body_json, $output, $return_headers, $output_progress);
+    }
+
+        /**
+         * Send data to API via specified method
+         */
+        protected function _sendData($method='POST', $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=true)
+        {
+            // Clean up endpoint
+            $endpoint = trim($endpoint, " \t\n\r\0\x0B/");
+
+            // Check JSON
+            if (is_null($body_json))
+            {
+                $this->error("JSON body to send is required");
+            }
+
+            if (is_string($body_json))
+            {
+                // Allow Human JSON to be passed in - more forgiving
+                $body = $this->json_decode($body_json, ['keepWsc'=>false]);
+                if (empty($body))
+                {
+                    $this->error("Invalid JSON body - likely syntax error. Make sure to use \"s and escape them as needed.");
+                }
+            }
+
+            // Wrap in data key if needed
+            if (!isset($body->data))
+            {
+                $data = $body;
+                $body = new StdClass();
+                $body->data = $data;
+            }
+            $body_json = json_encode($body);
+
+            // Get API curl object for endpoint
+            $ch = $this->getAPICurl($endpoint, $output_progress);
+            curl_setopt_array($ch, [
+                CURLOPT_CUSTOMREQUEST => strtoupper($method),
+                CURLOPT_POSTFIELDS => $body_json,
+            ]);
+
+            // Execute and check results
+            list($body, $headers) = $this->runAPICurl($ch, null, [], $output_progress);
+
+            if ($output)
+            {
+                if (empty($body->data))
+                {
+                    $this->output('No data in response.');
+                }
+                else
+                {
+                    $this->outputAPIResults($body->data, $output);
+                }
+            }
+
+            if ($return_headers)
+            {
+                return [$body, $headers];
+            }
+
+            return $body;
+        }
+
     /**
-     * Prep Curl object to hit TFX API
+     * Prep Curl object to hit Asana API
      * - endpoint should be api endpoint to hit
      */
     protected function getAPICurl($endpoint, $output_progress=true)
@@ -168,6 +244,11 @@ Class Pacli extends Console_Abstract
             return $app_url . "/0/" . $item_id;
         }
 
+        if ($type=='task')
+        {
+            return $item->permalink_url;
+        }
+
         return "NOT YET IMPLEMENTED";
     }
 
@@ -191,6 +272,11 @@ Class Pacli extends Console_Abstract
         else
         {
             $output = [];
+        }
+
+        if (!is_array($body))
+        {
+            $body = [$body];
         }
 
         foreach ($body as $result)
