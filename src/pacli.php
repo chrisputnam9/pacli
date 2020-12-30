@@ -41,7 +41,7 @@ Class Pacli extends Console_Abstract
         ["Endpoint slug, eg. 'projects'", "string"],
         ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
     ];
-	public function get($endpoint, $output=true, $return_headers=false, $output_progress=true)
+	public function get($endpoint, $output=true, $return_headers=false, $output_progress=false)
     {
         // Clean up endpoint
         $endpoint = trim($endpoint, " \t\n\r\0\x0B/");
@@ -113,14 +113,14 @@ Class Pacli extends Console_Abstract
     }
 
     protected $___post = [
-        "Post data to the Asana API",
+        "POST data to the Asana API",
         ["Endpoint slug, eg. 'projects'", "string"],
         ["JSON (or HJSON) body to send", "string"],
         ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
         ["Whether to return headers", "boolean"],
         ["Whether to output progress", "boolean"],
     ];
-	public function post($endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=true)
+	public function post($endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=false)
     {
         return $this->_sendData('POST', $endpoint, $body_json, $output, $return_headers, $output_progress);
     }
@@ -128,7 +128,7 @@ Class Pacli extends Console_Abstract
         /**
          * Send data to API via specified method
          */
-        protected function _sendData($method='POST', $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=true)
+        protected function _sendData($method='POST', $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=false)
         {
             // Clean up endpoint
             $endpoint = trim($endpoint, " \t\n\r\0\x0B/");
@@ -147,6 +147,10 @@ Class Pacli extends Console_Abstract
                 {
                     $this->error("Invalid JSON body - likely syntax error. Make sure to use \"s and escape them as needed.");
                 }
+            }
+            else
+            {
+                $body = $body_json;
             }
 
             // Wrap in data key if needed
@@ -192,7 +196,7 @@ Class Pacli extends Console_Abstract
      * Prep Curl object to hit Asana API
      * - endpoint should be api endpoint to hit
      */
-    protected function getAPICurl($endpoint, $output_progress=true)
+    protected function getAPICurl($endpoint, $output_progress=false)
     {
         $this->setupAPI();
         $url = self::API_URL . '/' . $endpoint;
@@ -351,7 +355,7 @@ Class Pacli extends Console_Abstract
      *  - Handle errors
      *  - Parse results
      */
-    protected function runAPICurl($ch, $close=true, $recurrance=[], $output_progress=true)
+    protected function runAPICurl($ch, $close=true, $recurrance=[], $output_progress=false)
     {
         if (!is_array($recurrance)) $recurrance=[];
         $recurrance = array_merge([
@@ -469,7 +473,7 @@ Class Pacli extends Console_Abstract
         $url_slug = preg_replace("/[^0-9a-z_]+/", "-", self::API_URL);
         $cache_path[]= $url_slug;
 
-        $endpoint_array = explode("/", $endpoint);
+        $endpoint_array = explode("/", $endpoint . ".json");
         $cache_path = array_merge($cache_path, $endpoint_array);
 
         return $cache_path;
@@ -477,7 +481,10 @@ Class Pacli extends Console_Abstract
 
 }
 
-// Kick it all off
-Pacli::run($argv);
+if (empty($__no_direct_run__))
+{
+    // Kick it all off
+    Pacli::run($argv);
+}
 
 // Note: leave this for packaging ?>
