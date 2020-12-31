@@ -37,7 +37,7 @@ Class Pacli extends Console_Abstract
     public $api_cache_lifetime = 604800; // Default: 1 week
 
     protected $___get = [
-        "GET data from the Asana API",
+        "GET data from the Asana API.  Refer to https://developers.asana.com/docs/asana",
         ["Endpoint slug, eg. 'projects'", "string"],
         ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
     ];
@@ -113,7 +113,7 @@ Class Pacli extends Console_Abstract
     }
 
     protected $___post = [
-        "POST data to the Asana API",
+        "POST data to the Asana API.  Refer to https://developers.asana.com/docs/asana",
         ["Endpoint slug, eg. 'projects'", "string"],
         ["JSON (or HJSON) body to send", "string"],
         ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
