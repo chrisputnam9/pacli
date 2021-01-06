@@ -4,7 +4,7 @@
  */
 Class Pacli extends Console_Abstract
 {
-    const VERSION = "1.0.1";
+    const VERSION = "1.0.0";
 
     // Name of script and directory to store config
     const SHORTNAME = 'pacli';
