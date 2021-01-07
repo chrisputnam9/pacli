@@ -4,7 +4,7 @@
  */
 Class Pacli extends Console_Abstract
 {
-    const VERSION = "1.0.1";
+    const VERSION = "1.0.2";
 
     // Name of script and directory to store config
     const SHORTNAME = 'pacli';
@@ -35,6 +35,8 @@ Class Pacli extends Console_Abstract
 
     protected $__api_cache_lifetime = ["How long to cache results in seconds (if enabled)"];
     public $api_cache_lifetime = 604800; // Default: 1 week
+
+	public $update_version_url = "https://raw.githubusercontent.com/chrisputnam9/pacli/master/README.md";
 
     protected $___get = [
         "GET data from the Asana API.  Refer to https://developers.asana.com/docs/asana",
