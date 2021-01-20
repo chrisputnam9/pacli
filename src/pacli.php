@@ -27,7 +27,7 @@ Class Pacli extends Console_Abstract
     public const API_URL = "https://app.asana.com/api/1.0";
 
     // Config Variables
-    protected $__api_key = ["TeamworkFX API key", "string"];
+    protected $__api_key = ["Asana API key", "string"];
     public $api_key = "";
 
     protected $__api_cache = ["Whether to cache results"];
