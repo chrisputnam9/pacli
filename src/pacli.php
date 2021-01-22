@@ -81,11 +81,6 @@ Class Pacli extends Console_Abstract
             // Get API curl object for endpoint
             $ch = $this->getAPICurl($endpoint, $output_progress);
 
-            // Default to limit -1
-            $this->updateCurlArgs($ch, [
-                '$limit' => -1
-            ]);
-
             // Execute and check results
             list($body, $headers) = $this->runAPICurl($ch, null, [], $output_progress);
 
@@ -130,7 +125,7 @@ Class Pacli extends Console_Abstract
         /**
          * Send data to API via specified method
          */
-        protected function _sendData($method='POST', $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=false)
+        protected function _sendData($method, $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=false)
         {
             // Clean up endpoint
             $endpoint = trim($endpoint, " \t\n\r\0\x0B/");
