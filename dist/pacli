@@ -4251,6 +4251,9 @@ if (!class_exists("Console_Abstract"))
         const COL1_WIDTH = 20; // percentage of full width
         const COL2_WIDTH = 50; // percentage of full width - col1 + col2
 
+        // Line break for editing text
+        const EDIT_LINE_BREAK = "--------------------------------------------------";
+
         /**
         * Callable Methods
         */
@@ -6189,8 +6192,11 @@ if (!class_exists("Console_Abstract"))
                 // Deal with odd UTF8 characters that sneak in sometimes
                 $dom = utf8_decode($dom);
 
+                $dom = trim($dom);
+                if (empty($dom)) return $dom;
+
                 $tmp = new DOMDocument();
-                if (! @$tmp->loadHTML(trim($dom)))
+                if (! @$tmp->loadHTML($dom))
                 {
                     return $dom;
 
@@ -6430,7 +6436,7 @@ if (!empty($src_includes) and is_array($src_includes))
  */
 Class Pacli extends Console_Abstract
 {
-    const VERSION = "1.0.2";
+    const VERSION = "1.0.3";
 
     // Name of script and directory to store config
     const SHORTNAME = 'pacli';
@@ -6453,7 +6459,7 @@ Class Pacli extends Console_Abstract
     public const API_URL = "https://app.asana.com/api/1.0";
 
     // Config Variables
-    protected $__api_key = ["TeamworkFX API key", "string"];
+    protected $__api_key = ["Asana API key", "string"];
     public $api_key = "";
 
     protected $__api_cache = ["Whether to cache results"];
@@ -6468,6 +6474,8 @@ Class Pacli extends Console_Abstract
         "GET data from the Asana API.  Refer to https://developers.asana.com/docs/asana",
         ["Endpoint slug, eg. 'projects'", "string"],
         ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
+        ["Whether to return headers", "boolean"],
+        ["Whether to output progress", "boolean"],
     ];
 	public function get($endpoint, $output=true, $return_headers=false, $output_progress=false)
     {
@@ -6506,11 +6514,6 @@ Class Pacli extends Console_Abstract
 
             // Get API curl object for endpoint
             $ch = $this->getAPICurl($endpoint, $output_progress);
-
-            // Default to limit -1
-            $this->updateCurlArgs($ch, [
-                '$limit' => -1
-            ]);
 
             // Execute and check results
             list($body, $headers) = $this->runAPICurl($ch, null, [], $output_progress);
@@ -6556,7 +6559,7 @@ Class Pacli extends Console_Abstract
         /**
          * Send data to API via specified method
          */
-        protected function _sendData($method='POST', $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=false)
+        protected function _sendData($method, $endpoint, $body_json=null, $output=true, $return_headers=false, $output_progress=false)
         {
             // Clean up endpoint
             $endpoint = trim($endpoint, " \t\n\r\0\x0B/");

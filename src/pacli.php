@@ -4,7 +4,7 @@
  */
 Class Pacli extends Console_Abstract
 {
-    const VERSION = "1.0.2";
+    const VERSION = "1.0.3";
 
     // Name of script and directory to store config
     const SHORTNAME = 'pacli';
@@ -42,6 +42,8 @@ Class Pacli extends Console_Abstract
         "GET data from the Asana API.  Refer to https://developers.asana.com/docs/asana",
         ["Endpoint slug, eg. 'projects'", "string"],
         ["Fields to output in results - comma separated, false to output nothing, * to show all", "string"],
+        ["Whether to return headers", "boolean"],
+        ["Whether to output progress", "boolean"],
     ];
 	public function get($endpoint, $output=true, $return_headers=false, $output_progress=false)
     {
