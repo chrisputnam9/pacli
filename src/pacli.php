@@ -247,12 +247,12 @@ class Pacli extends Console_Abstract
             return $app_url . "/0/" . $item_id;
         }
 
-        if ($type=='task')
+        if ($type=='task' && isset($item->permalink_url))
         {
             return $item->permalink_url;
         }
 
-        return "NOT YET IMPLEMENTED";
+        return "NO LINK";
     }
 
     /**
