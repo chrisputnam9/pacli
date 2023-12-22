@@ -3,11 +3,11 @@
 ## Latest Version
 See notes to follow below in case you are upgrading from a much earlier version.
 
-### Download Latest Version (1.0.4):
+### Download Latest Version (1.0.5):
 https://raw.githubusercontent.com/chrisputnam9/pacli/master/dist/pacli
 
 ### Latest Version Hash (md5):
-9555f306450153cd9835c23e2d7013c4
+f859d2f1d1df80440cfcc3df33282d4e
 
 ## Install PACLI
 1. Make sure you have PHP, or [install it if not](http://php.net/manual/en/install.php)
