@@ -1,7 +1,6 @@
-# Getting Started
+# PACLI - PHP Asana Command Line Interface
 
 ## Latest Version
-See notes to follow below in case you are upgrading from a much earlier version.
 
 ### Download Latest Version (1.0.5):
 https://raw.githubusercontent.com/chrisputnam9/pacli/master/dist/pacli
@@ -54,11 +53,10 @@ If an update is available, you can run the following to install the update:
     ----------------------------------------------------------------------------------------------------------------------
     | OPTION                 | TYPE                              | INFO                                                  |
     ----------------------------------------------------------------------------------------------------------------------
-    | ----WSC--              | (boolean)                         | HJSON Data for config file                            |
-    | --allow-root           | (boolean)                         | OK to run as root                                     |
+    | --allow-root           | (boolean)                         | OK to run as root without warning                     |
     | --api-cache            | (boolean)                         | Whether to cache results                              |
     | --ssl-check            | (boolean)                         | Whether to check SSL certificates with curl           |
-    | --stamp-lines          | (boolean)                         | Stamp output lines                                    |
+    | --stamp-lines          | (boolean)                         | Stamp / prefix output lines with the date and time    |
     | --verbose              | (boolean)                         | Enable verbose output                                 |
     ----------------------------------------------------------------------------------------------------------------------
     Use no- to set boolean option to false - eg. --no-stamp-lines
