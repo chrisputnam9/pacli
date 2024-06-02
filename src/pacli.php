@@ -4,7 +4,7 @@
  */
 class Pacli extends Console_Abstract
 {
-    const VERSION = "1.1.5";
+    const VERSION = "1.1.6";
 
     // Name of script and directory to store config
     const SHORTNAME = 'pacli';
@@ -81,6 +81,7 @@ class Pacli extends Console_Abstract
             $this->log("Absent cache data, running fresh API request");
 
 			$data = [];
+			$original_endpoint = $endpoint;
 			while ($endpoint) {
 				// Get API curl object for endpoint
 				$ch = $this->getAPICurl($endpoint, $output_progress);
@@ -107,7 +108,7 @@ class Pacli extends Console_Abstract
 
             // Cache results
             $body_json = json_encode($body, JSON_PRETTY_PRINT);
-            $this->setAPICacheContents($endpoint, $body_json);
+            $this->setAPICacheContents($original_endpoint, $body_json);
         }
 
         if ($output)
